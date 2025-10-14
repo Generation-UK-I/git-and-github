@@ -74,11 +74,13 @@ Some of this may not make sense for the moment, however you will likely be using
 - If you want to confirm a specific setting Git is currently using, you can use: `git config --get user.name` This specific command will just show you the configured username. You can replace `user.name` with any other configuration key to get the respective value.
 - If you need to change a setting in your Git configuration, you can simply run the `git config` command again with the updated value.
 
-## Connecting to GitHub
+## Authenticating with GitHub
 
 To use Git with GitHub we need to authenticate your local machine.
 
 Although you can clone public repo’s without authenticating, to push to your own repositories (or others you've been given permission for) you need to generate some ssh keys.
+
+### Git Bash or Linux
 
 1. In Git Bash generate an ssh key pair by adding your github email address to the following command:
 
@@ -109,7 +111,42 @@ Your public key can be used to verify messages sent with your private key, to fa
 6. In GitHub navigate to your profile, and find the `SSH and GPG keys` section.
 Select `Add a new SSH Key`, and paste the public key into the text box, then click `Add Key`.
 
-### Creating a Local Repository
+### PowerShell
+
+If you do not have Git Bash you can use PowerShell:
+
+1. Generate an ssh key pair by adding your github email address to the following command:
+
+```powershell
+ssh-keygen -t ed25519 -C "[your github email]”
+```
+
+2. You will be asked where to save the key, press `enter` to save in the default location which is a hidden `.ssh` folder in your home directory. Note the key name. You will also be prompted to enter a passphrase to secure the key, but leave it blank on this occasion.
+
+3. Start the SSH Agent with
+
+```powershell
+Start-Service ssh-agent
+```
+
+Confirm with
+
+```powershell
+Get-Service ssh-agent
+```
+
+4. Add Your Private Key to the Agent
+
+```powershell
+ssh-add $env:USERPROFILE\.ssh\id_ed25519
+```
+
+5. View the public key using a text editor, and copy the contents to your clipboard.
+
+6. In GitHub navigate to your profile, and find the `SSH and GPG keys` section.
+Select `Add a new SSH Key`, and paste the public key into the text box, then click `Add Key`.
+
+## Creating a Local Repository
 
 Now you can start working from scratch by creating a new repository, or you can clone an existing one.
 
@@ -128,8 +165,10 @@ Now you have:
 
 You can now use `git commit` and `git push` to syncronise your local repository with GitHub. You will be prompted to provide a commit message, your first commit when you're populating your repo' is often just *"initial commit"*.
 
+## Easy Mode
+
 If you've gotten this far congrats... now for easy mode.
 
 If you have git and `Visual Studio Code` installed, you can actually do everything from within VSC.
 
-Why not do it this from the start??? [Don't forget](https://blog.codeitbro.com/wp-content/uploads/2025/08/using-git-via-gui-vs-command-line-meme.jpg)
+>Why not do it this way from the start??? [Don't forget](https://blog.codeitbro.com/wp-content/uploads/2025/08/using-git-via-gui-vs-command-line-meme.jpg)

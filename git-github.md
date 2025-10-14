@@ -163,7 +163,7 @@ It is likely that not all files in the project have been changed, so this is whe
   
 When all of your changes are ready, you can then commit everything in the staging area at once, rather than one file at a time.
 
-Once you've completed all of your updates, you are ready to `commit` the changed files, which is effectively pushing a package containing all of the updates back to the relevant branch. 
+Once you've completed all of your updates, you are ready to `commit` the changed files, which is effectively pushing a package containing all of the updates back to the relevant branch.
 
 In addition to the changes, the commit also includes meta-data, some of which is captured automatically, such as a timestamp, and the user's identity. You're also prompted to include a message with your commit which should be a brief summary of what is included.
 
