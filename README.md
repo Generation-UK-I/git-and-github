@@ -31,6 +31,7 @@ Included in this repository are the following resources which will guide you thr
 - [Introduction to Git and Github](/git-github.md)
 - [Installing Git](/installing-git.md)
 - [Branching Lab](/git_branching_lab.md)
+- [Intro to GitHub Actions](/github-actions.md)
 
 ## Advanced
 
