@@ -20,7 +20,6 @@
 ```python
 import json
 import logging
-
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -38,20 +37,24 @@ def lambda_handler(event, context):
             'statusCode': 400,
             'headers': {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST'
             },
             'body': json.dumps({'error': 'Invalid JSON in request body'})
         }
-    
+
     name = body.get('name', '').strip()
-    
+
     # Validate that name was provided
     if not name:
         return {
             'statusCode': 400,
             'headers': {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST'
             },
             'body': json.dumps({'error': 'Name is required'})
         }
@@ -61,13 +64,15 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'headers': {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST'
         },
         'body': json.dumps({
             'message': f'Hello {name}!'
         })
     }
-    
+
     return response
 ```
 
@@ -241,7 +246,7 @@ Add this to your website's HTML file. Update the `API_ENDPOINT` variable with yo
 
     <script>
         // Replace this with your actual API Gateway endpoint
-        const API_ENDPOINT = 'https://YOUR_API_ID.execute-api.YOUR_REGION.amazonaws.com/prod';
+        const API_ENDPOINT = 'https://[YOUR_API_ENDPOINT]/[STAGE]/[RESOURCE]';
         
         const form = document.getElementById('greetingForm');
         const nameInput = document.getElementById('nameInput');
@@ -272,7 +277,6 @@ Add this to your website's HTML file. Update the `API_ENDPOINT` variable with yo
                 });
                 
                 const data = await response.json();
-                console.log('API response:', data);
                 
                 if (response.ok) {
                     showResponse(data.message, 'success');
