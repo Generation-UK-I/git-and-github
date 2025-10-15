@@ -38,3 +38,4 @@ Included in this repository are the following resources which will guide you thr
 - [Adding a Lambda Function](/aws_lambda_form_project.md)
   - [Lambda Function Code Breakdown](/lambda-breakdown.md)
   - [JavaScript Code Breakdown](/javascript-breakdown.md)
+  - [Troubleshooting](/tshoot.md)
