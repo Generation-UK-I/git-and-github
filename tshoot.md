@@ -1,53 +1,85 @@
-# Missing Authentication Token - Common Causes & Fixes
+# Troubleshooting Guide
 
-1. Incorrect URL
+## API Gateway Endpoint Returns “Missing Authentication Token”
 
-Cause: The URL you're calling might be missing the correct resource path or stage name.
-Fix: Make sure your API_ENDPOINT includes the full path, like:
+Cause: The frontend is calling the wrong URL — usually missing the resource path.
+
+Fix: Ensure the full endpoint includes the stage and resource path:
+
+`https://<api-id>.execute-api.<region>.amazonaws.com/<stage>/<resource>`
+
+Example:
 
 ```js
 const API_ENDPOINT = 'https://your-api-id.execute-api.your-region.amazonaws.com/prod/greet';
 ```
 
-If your Lambda is behind a resource like /greet, you must include it.
+>**Resource Paths** explanation incoming...
 
-2. Wrong HTTP Method
+## CORS Error in Browser (Preflight or POST Request)
 
-Cause: You're sending a POST request, but the API might only accept GET, or vice versa.
+Cause: Missing or incorrect CORS headers in either the OPTIONS method or Lambda response.
 
-Fix: Check your API Gateway method configuration and ensure it matches the method used in your fetch() call.
-
-3. Missing Stage Name
-
-Cause: You might be calling `https://your-api-id.execute-api.your-region.amazonaws.com` without /prod or whatever stage name you deployed to.
-
-Fix: Always include the stage name in the endpoint.
-
-4. CORS Misconfiguration
-
-Cause: If you're testing from a browser and CORS isn't enabled properly, the preflight request might fail silently.
-
-Fix: Ensure your API Gateway method has:
-
-- OPTIONS method enabled.  
-- CORS headers like:
+Fix: Create an OPTIONS method for the resource in API Gateway - Use Mock Integration and create the following `Method Response headers`:
 
 ```sh
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: POST, OPTIONS Access-Control-Allow-Headers: Content-Type
+Access-Control-Allow-Origin
+Access-Control-Allow-Methods
+Access-Control-Allow-Headers
+Content-Type
 ```
 
-5. Deployment Not Updated
+After adding the `Method Response headers` you then need to provide mappings for these headers under `Integration Response` > `header mappings`:
 
-Cause: You made changes to the API but didn’t redeploy.
-Fix: In API Gateway, click Deploy API after making changes.
+```sh
+Access-Control-Allow-Origin: '*'
+Access-Control-Allow-Methods: 'OPTIONS,POST'
+Access-Control-Allow-Headers: 'Content-Type'
+Content-Type: 'application/json'
+```
 
-**How to Test**
+## Lambda Response Missing CORS Headers
 
-Try calling the endpoint using curl or Postman to isolate whether the issue is with the frontend or the API itself:
+Cause: Lambda returns a response without CORS headers.
+
+Fix: Add these headers to every return block in the Lambda function
+
+```python
+'headers': {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'OPTIONS,POST'
+}
+```
+
+### Extra Checks
+
+
+- **Wrong HTTP Method**
+
+    Cause: You're sending a POST request, but the API might only accept GET, or vice versa.
+
+    Fix: Check your API Gateway method configuration and ensure it matches the method used in your fetch() call.
+
+- **Missing Stage Name**
+
+    Cause: You might be calling `https://your-api-id.execute-api.your-region.amazonaws.com` without /prod or whatever stage name you deployed to.
+
+    Fix: Always include the stage name in the endpoint.
+
+- **Deployment Not Updated**
+
+    Cause: You made changes to the API but didn’t redeploy.
+
+    Fix: In API Gateway, click Deploy API after making changes.
+
+---
+
+Try calling the endpoint using curl to isolate whether the issue is with the frontend or the API itself:
 
 ```sh
 curl -X POST https://your-api-id.execute-api.your-region.amazonaws.com/prod/greet \  
 -H "Content-Type: application/json" \  
--d '{"name": "Antony"}'
+-d '{"name": "myName"}'
 ```

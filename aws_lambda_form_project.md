@@ -102,15 +102,45 @@ def lambda_handler(event, context):
 3. API name: `GreetingAPI`
 4. Endpoint type: **Regional**
 5. Click **Create API**
+6. Select root `/` and **Create resource**
+7. On the right give your resource a name (e.g. `greet`)
 
-### Create a POST Resource
+### Create a POST Method
 
-1. In Resources, select the root `/`
+1. In Resources, select your resource (e.g. `greet`)
 2. Click **Create Method** → **POST**
 3. Integration type: **Lambda Function**
 4. Lambda Function: `GreetingFunction`
-5. Click **Save**
-6. Accept the Lambda permission popup
+5. Enable **Lambda Proxy Integration**.
+6. Click **Save**
+7. Accept any Lambda permission popup
+
+### Add OPTIONS Method for CORS
+
+1. In Resources, select your resource (e.g. `greet`)
+2. Click **Create Method** → **OPTIONS** 
+3. Select Integration type: `Mock`
+4. Click Save
+5. Navigate back to your API and resource, and select **OPTIONS**
+6. Add the following `Method Response Headers`:
+
+```sh
+Access-Control-Allow-Origin
+Access-Control-Allow-Methods
+Access-Control-Allow-Headers
+Content-Type
+```
+
+7. Navigate to Integration Response
+8. Add the following `header mappings`:
+
+```sh
+
+Access-Control-Allow-Origin: '*'
+Access-Control-Allow-Methods: 'OPTIONS,POST'
+Access-Control-Allow-Headers: 'Content-Type'
+Content-Type: 'application/json'
+```
 
 ### Enable CORS
 
@@ -124,15 +154,17 @@ If you're using `API Gateway` + `Lambda`, you need to configure CORS in API Gate
 2. Click **Method Request**
 3. Go back and click on the root `/`
 4. Click **Enable CORS and replace existing CORS headers**
-5. Check all four methods (GET, POST, PUT, DELETE)
-6. Click **Enable CORS and replace existing CORS headers**
+5. Check all methods and codes (4XX, 5XX, POST, OPTIONS)
+6. Click **Enable CORS**
 
 ### Deploy the API
 
 1. Click **Deploy API**
 2. Deployment stage: Create new stage called `prod`
 3. Click **Deploy**
-4. Copy your **Invoke URL** (looks like: `https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod`)
+4. Copy your **Invoke URL** (looks like: `https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/stage/resource`)
+
+>NOTE: You may need to add the `stage` and `resource` manually
 
 ## Part 3: Update Your Website
 
