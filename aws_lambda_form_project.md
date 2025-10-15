@@ -272,6 +272,7 @@ Add this to your website's HTML file. Update the `API_ENDPOINT` variable with yo
                 });
                 
                 const data = await response.json();
+                console.log('API response:', data);
                 
                 if (response.ok) {
                     showResponse(data.message, 'success');
