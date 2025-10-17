@@ -1,4 +1,4 @@
-# GitHub Actions 
+# GitHub Actions
 
 GitHub Actions is tool, integrated into GitHub, which allows you to automate workflows.
 
@@ -6,7 +6,7 @@ It works by monitoring for defined events in or to your repository, and triggers
 
 To create an action first create a hidden folder in your repo, a sub-folder called workflows, and in there a deploy.yaml file.
 
-[image]
+![yaml path](/img/yaml-path.jpg)
 
 In our case you should have your website files and resources, with the correct structure, already stored in your repository. You also have a local copy of our repository that we can continue working on.
 

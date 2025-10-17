@@ -118,7 +118,7 @@ def lambda_handler(event, context):
 ### Add OPTIONS Method for CORS
 
 1. In Resources, select your resource (e.g. `greet`)
-2. Click **Create Method** → **OPTIONS** 
+2. Click **Create Method** → **OPTIONS**
 3. Select Integration type: `Mock`
 4. Click Save
 5. Navigate back to your API and resource, and select **OPTIONS**
@@ -135,7 +135,6 @@ Content-Type
 8. Add the following `header mappings`:
 
 ```sh
-
 Access-Control-Allow-Origin: '*'
 Access-Control-Allow-Methods: 'OPTIONS,POST'
 Access-Control-Allow-Headers: 'Content-Type'
