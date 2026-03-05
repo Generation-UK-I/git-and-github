@@ -42,10 +42,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Install AWS CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
+      # - name: Install AWS CLI
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y awscli
 
       - name: Sync with S3
         env:
@@ -141,5 +141,7 @@ See below for how to do this in each of the main public cloud providers:
 |AWS|Create a `user account` and `access keys` with the appropriate permissions|
 |GCP|Create a `Service Account` with an associated `encryption key`|
 |Azure|Use an `Access Key` from your `Storage Account`|
+
+In AWS you should create a new IAM user and assign the `AmazonS3FullAccess` and `SecretsManagerReadWrite` permissions. This new user does not need Management Console Access, but does require encryption keys, which you will need to add to your GitHub Repository's secrets.
 
 These credentials should then be added as repository secrets, which can be referenced in your GitHub Actions template.
